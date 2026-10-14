@@ -1,0 +1,22 @@
+- id: conventional-commit
+  name: conventional commit message
+  description: Check the commit message with gitlint. The title must use Conventional Commits and have at most 72 characters.
+  entry: >-
+    gitlint
+    --contrib contrib-title-conventional-commits
+    --ignore body-is-missing
+    -c title-max-length.line-length=72
+    -c contrib-title-conventional-commits.types=feat,fix,refactor,perf,test,docs,build,ci,chore,style,revert
+    --msg-filename
+  language: python
+  stages: [commit-msg]
+
+- id: prune-merged-branches
+  name: prune merged branches
+  description: After a pull, delete the local branches whose upstream branch is gone.
+  entry: scripts/prune-merged-branches.sh
+  language: script
+  stages: [post-merge]
+  always_run: true
+  pass_filenames: false
+  verbose: true
